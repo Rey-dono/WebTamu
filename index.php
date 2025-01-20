@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=press+start+2P&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <title>Selamat Datang</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body, html {
             margin: 0;
             padding: 0;
@@ -31,24 +30,29 @@
             align-items: center;
             height: 100%;
             position: relative;
-            transform: translateY(25%); /* Sedikit geser ke bawah */
+            transform: translateY(25%);
         }
 
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
 
         .pixel-button {
-            font-family: "Press Start 2P", cursive;
-            font-size: 30px;
+            font-family: "Press Start 2P", serif;
+            font-size: 16px;
             background-color: #ffcc00;
             color: #000;
             border: 4px solid #000;
             padding: 10px 20px;
-            text-transform: upppercase;
+            text-transform: uppercase;
+            text-decoration: none;
             cursor: pointer;
             box-shadow: 0 5px #b8860b;
             transition: transform 0.2s, box-shadow 0.2s;
             border-radius: 40px;
-            text-decoration: none;
-
         }
 
         .pixel-button:active {
@@ -59,15 +63,42 @@
         .pixel-button:hover {
             background-color: #ffda3c;
         }
+
+        .button {
+            font-family: "Press Start 2P", cursive;
+            font-size: 16px;
+            background-color: #ffcc00;
+            color: #000;
+            border: 4px solid #000;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 5px #b8860b;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 40px;
+        }
+
+        .button:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px #b8860b;
+        }
+
+        .button:hover {
+            background-color: #ffda3c;
+        }
     </style>
 </head>
 <body>
     <video class="video-background" autoplay muted loop>
         <source src="./assets/landing.mp4" type="video/mp4">
+        Your browser does not support the video tag.
     </video>
 
-    <div class="content">
-        <a href="scan.php" class="pixel-button">Next</a>
+    <div class="content">    
+        <div class="button-container">
+            <button class="pixel-button">Formulir</button>
+            <a href="scan.php" class="pixel-button">scan</a>
+        </div>
     </div>
 </body>
 </html>
