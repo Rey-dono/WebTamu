@@ -96,8 +96,8 @@
 
     <div class="content">    
         <div class="button-container">
-            <button class="pixel-button">Formulir</button>
             <a href="scan.php" class="pixel-button">scan</a>
+            <a href="formulir.php" class="pixel-button">Formulir</a>
         </div>
     </div>
 </body>
