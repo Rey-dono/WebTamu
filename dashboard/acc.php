@@ -139,7 +139,7 @@ while ($row = $result->fetch_assoc()) {
                 </form>
                 <h3 class='text-lg font-bold'>Peringatan!</h3>
                 <p class='py-4'>Data yang dihapus tidak dapat dikembalikan lagi. Apa kamu yakin untuk menghapus data ini?</p>
-                <a class='btn btn-outline btn-error' href='delete.php?id=$row[id]'>ya</a>
+                <a class='btn btn-outline btn-error' name='del_acc' href='../service/auth.php?id=$row[id]'>ya</a>
             </div>
             </dialog>
             </td>

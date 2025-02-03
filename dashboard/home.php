@@ -10,10 +10,8 @@ if (isset($_SESSION['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.0.0/dist/flowbite.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
-    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
 
 </head>
@@ -143,7 +141,7 @@ while ($row = $query->fetch_assoc()) {
                 </form>
                 <h3 class='text-lg font-bold'>Peringatan!</h3>
                 <p class='py-4'>Data yang dihapus tidak dapat dikembalikan lagi. Apa kamu yakin untuk menghapus data ini?</p>
-                <a class='btn btn-outline btn-error' href='delete.php?id=<?=$row["id"]?>'>ya</a>
+                <a class='btn btn-outline btn-error' name='del-e' href='../service/auth.php?=$row["id"]?>'>ya</a>
             </div>
             </dialog>
             </td>

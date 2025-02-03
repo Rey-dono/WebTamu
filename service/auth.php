@@ -35,6 +35,50 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         header ("location: ../index.php");
         break;
     }
+} elseif($_SERVER["REQUEST_METHOD"] == "GET"){
+    $type = $_GET['type'];
+
+    switch($type){
+        case 'del_e':
+            del_e();
+            break;
+
+        case 'del_acc':
+            del_acc();
+            break;
+
+        default:
+            header ("location: ../index.php");
+            break;
+    }
+} else {
+    header ("location: ../index.php");
+}
+
+function del_e(){
+    include "connection.php";
+    $id = $_GET['id'];
+    $sql = "DELETE FROM events WHERE id=$id";
+    $result = mysqli_query($conn, $sql);
+    if($result){
+        $_SESSION['success'] = 'data berhasil dihapus';
+    } else {
+        $_SESSION['error'] = 'Data salah';
+    }
+    header ("location: ../dashboard/home.php");
+}
+
+function del_acc(){
+    include "connection.php";
+    $id = $_GET['id'];
+    $sql = "DELETE FROM admin WHERE id=$id";
+    $result = mysqli_query($conn, $sql);
+    if($result){
+        $_SESSION['success'] = 'data berhasil dihapus';
+    } else {
+        $_SESSION['error'] = 'Data salah';
+    }
+    header ("location: ../dashboard/acc.php");
 }
 
 function edit() {
