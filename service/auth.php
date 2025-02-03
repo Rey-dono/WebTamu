@@ -46,7 +46,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             break;
         default:
             // header ("location: ../index.php");
-            echo "$type";
             break;
     }
 }
