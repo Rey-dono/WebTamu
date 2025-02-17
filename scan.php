@@ -28,6 +28,7 @@ if (isset($_SESSION['error'])) {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      
       /* z-index: 1; */
     }
 
@@ -41,8 +42,8 @@ if (isset($_SESSION['error'])) {
       justify-content: center;
       height: 100%;
       z-index: 1;
-      padding-bottom: 20px;
-      margin: 20px;
+      padding-bottom: 70px;
+      margin: 70px;
     }
 
     #preview {
@@ -60,7 +61,7 @@ if (isset($_SESSION['error'])) {
 <body>
   <!-- background video -->
   <video class="video-background" autoplay muted loop>
-    <source src="./assets/scann.mp4" type="video/mp4">
+    <source src="./assets/kamera.mp4" type="video/mp4">
   </video>
 
   <!-- cam scanner. please turn on your webcam to use this -->

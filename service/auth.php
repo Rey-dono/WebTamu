@@ -211,11 +211,11 @@ function event(){
     $result = mysqli_query($conn, $sql);
     if(!$result->num_rows > 0){
         // Check if the event dates overlap with any existing events
-        $sql = "SELECT * FROM events WHERE ('$start' BETWEEN `waktu_mulai` AND `waktu_berakhir`) OR ('$over' BETWEEN `waktu_mulai` AND `waktu_berakhir`) OR (`waktu_mulai` BETWEEN '$start' AND '$over') OR (`waktu_berakhir` BETWEEN '$start' AND '$over')";
+        $sql = "SELECT * FROM events WHERE ('$start' BETWEEN waktu_mulai AND waktu_berakhir) OR ('$over' BETWEEN waktu_mulai AND waktu_berakhir) OR (waktu_mulai BETWEEN '$start' AND '$over') OR (waktu_berakhir BETWEEN '$start' AND '$over')";
         $result = mysqli_query($conn, $sql);
         
         if(!$result->num_rows > 0){
-            $sql = "INSERT INTO events ( `name`, `instansi`, `waktu_mulai`, `waktu_berakhir`) VALUES ('$name', '$instansi', '$start', '$over')";
+            $sql = "INSERT INTO events ( name, instansi, waktu_mulai, waktu_berakhir) VALUES ('$name', '$instansi', '$start', '$over')";
             $result = mysqli_query($conn, $sql);
             if($result){
                 $_SESSION['success'] = 'data berhasil ditambahkan';
@@ -248,81 +248,67 @@ function delete(){
 
 function form(){
     include "connection.php";
-    $nama = $_POST['nama'];
-    $event = $_POST['event'];
-    $telepon = $_POST['telepon'];
-    $token = $_POST['token'];
-    if($token != ""){
-        $level = 'VIP';
-    }else{
-        $level = "REGULAR";
+   // Tambahkan ini jika belum ada
+
+    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
+    $telepon = mysqli_real_escape_string($conn, $_POST['telepon']);
+    $token = mysqli_real_escape_string($conn, $_POST['token']);
+    $sql_e = "SELECT id FROM events WHERE CURDATE() BETWEEN waktu_mulai AND waktu_berakhir";
+
+    $event = mysqli_query($conn,$sql_e);
+    if($event->num_rows == 0){
+      $_SESSION['error'] = 'Tidak ada event yang berlangsung';
+        header ("location: ../index.php");
+        
     }
+    $level = ($token != "") ? 'VIP' : 'REGULAR';
 
     $sql = "SELECT * FROM tamu WHERE nama = '$nama'";
     $result = mysqli_query($conn, $sql);
-    if(!$result->num_rows > 0){
-        $sql = "INSERT INTO tamu (nama, fid_events, level, token, telepon) VALUES ('$nama', $event, $level, '$token', $telepon)";
+
+    if(mysqli_num_rows($result) == 0){ 
+        $sql = "INSERT INTO tamu (nama, fid_events, level, token, telepon) VALUES ('$nama', (SELECT id FROM events WHERE CURDATE() BETWEEN waktu_mulai AND waktu_berakhir), '$level', '$token', '$telepon')";
         $result = mysqli_query($conn, $sql);
         if($result){
+           
+                $sql = "INSERT INTO reports (fid_tamu, date, time, events_fid) VALUES (
+                    (SELECT id FROM tamu WHERE telepon = $telepon), 
+                    CURDATE(), 
+                    CURTIME(), 
+                    (SELECT id FROM events WHERE CURDATE() BETWEEN waktu_mulai AND waktu_berakhir)
+                    )";
+                    
+                    $result = mysqli_query($conn, $sql);
             $_SESSION['success'] = 'data berhasil ditambahkan';
+            
         } else {
-            $_SESSION['error'] = 'Data salah';
+            $_SESSION['error'] = 'Terjadi kesalahan saat menambahkan data';
         }
-        } else {
-            $_SESSION['error'] = 'Data sudah ada';
-        } 
-
-    header ("location: ../index.php");
+    } else {
+        $_SESSION['error'] = 'Data sudah ada';
     }
+
+    header("location: ../index.php");
+    exit();
+}
+
 
 
 function login(){
     include "connection.php";
     $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password =  $_POST['password']; //hash('sha256', $_POST['password']); // Hash the input password using SHA-256
+    $password =  hash('sha256', $_POST['password']); // Hash the input password using SHA-256
     $sql = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $row['username'];
-        $_SESSION['role'] = $row['role'];
+        $_SESSION['id'] = $row['id'];
         $_SESSION['success'] = 'Berhasil login';
-        header('location: ../dashboard/dashboard.php');
+        header('location: ../dashboard/home.php');
         exit();
     } else {
         $_SESSION['error'] = 'Ada data yang salah';
+        }
     }
-}
-
-// function register(){
-//     include "./connection.php";
-
-//     $username = $_POST['username'];
-//     $password = hash('sha256', $_POST['password']); // Hash the input password using SHA-256
-//     $cpassword = hash('sha256', $_POST['cpassword']); // Hash the input confirm password using SHA-256
-    
-//     if ($password == $cpassword) {
-//         $sql = "SELECT * FROM admin WHERE username='$username'";
-//         $result = mysqli_query($conn, $sql);
-//         if (!$result->num_rows > 0) {
-//             $sql = "INSERT INTO admin (username, password)
-//                     VALUES ('$username', '$password')";
-//             $result = mysqli_query($conn, $sql);
-//             if ($result) {
-//                 echo "<script>alert('Selamat, registrasi berhasil!')</script>";
-//                 // mengkosongkan value setelah berhasil insert data
-//                 $username = "";
-//                 $_POST['password'] = "";
-//                 $_POST['cpassword'] = "";
-//                 exit();
-//             } else {
-//                 echo "<script>alert('Woops! Terjadi kesalahan.')</script>";
-//             }
-//         } else {
-//             echo "<script>alert('Woops! Email Sudah Terdaftar.')</script>";
-//         }
-//     } else {
-//         echo "<script>alert('Password Tidak Sesuai')</script>";
-//     }
-// }

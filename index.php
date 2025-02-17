@@ -66,7 +66,7 @@
 </head>
 <body>
     <video class="video-background" autoplay muted loop>
-        <source src="./assets/landing.mp4" type="video/mp4">
+        <source src="./assets/kuning.mp4" type="video/mp4">
     </video>
 
     <?php

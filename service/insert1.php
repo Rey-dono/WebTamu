@@ -19,7 +19,6 @@ if(isset($_POST['data'])){
             CURDATE(), 
             CURTIME(), 
             (SELECT fid_events FROM tamu WHERE token = '$item') 
-            AND (SELECT fid_events FROM events WHERE CURDATE() BETWEEN waktu_mulai AND waktu_berakhir)
             )";
             $conn->query($sql);
             $_SESSION['success'] = 'data berhasil ditambahkan';

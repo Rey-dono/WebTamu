@@ -1,16 +1,22 @@
 <?php
-    session_start();
-                if(isset($_SESSION['success'])){
-                    echo "<script>Swal.fire('Success', '".$_SESSION['success']."', 'success');</script>";
-                    unset($_SESSION['success']);
-                } else if(isset($_SESSION['error'])){
-                    echo "<script>Swal.fire('Error', '".$_SESSION['error']."', 'error');</script>";
-                    unset($_SESSION['error']);
-                }
-                ?>
+
+session_start();
+if (isset($_SESSION['username']) == false) {
+    header("location: index.php");
+exit();
+}
+if (isset($_SESSION['success'])) {
+    echo "<script>Swal.fire('Success', '" . $_SESSION['success'] . "', 'success');</script>";
+    unset($_SESSION['success']);
+} else if (isset($_SESSION['error'])) {
+    echo "<script>Swal.fire('Error', '" . $_SESSION['error'] . "', 'error');</script>";
+    unset($_SESSION['error']);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,102 +28,112 @@
 
     <style>
         body {
-            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            background: rgb(174, 143, 114);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
         }
-        nav {
-            background: linear-gradient(to right, #6b21a8, #4338ca);
+
+        .container {
             width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 10;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            background: #841922;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        main {
-            width: 50%;
-            max-width: 6xl;
-            margin-top: 6rem;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-        footer {
-            background: linear-gradient(to right, #6b21a8, #4338ca);
-            width: 100%;
-            padding: 1rem 0;
-            margin-top: auto;
+
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: bold;
             text-align: center;
+            margin-bottom: 1.5rem;
             color: white;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 0.75rem;
-            overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+        .form-group {
+            margin-bottom: 1rem;
         }
-        table th, table td {
-        padding: 0.75rem; /* Perkecil padding */
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        font-size: 0.875rem; /* Perkecil ukuran font */
+
+        .form-group label {
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3b82f6;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition:  0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .submit-btn:hover {
+            background-color: #2563eb;
         }
     </style>
 </head>
+
 <body>
-    <nav>
-        <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center relative">
-            <h1 class="text-2xl font-bold text-white">Formulir Event</h1>
-        </div>
-    </nav>
 
-    <main>
-        <h1 class="text-4xl font-bold text-white text-center mb-8">Tambah Event Baru</h1>
-
-        <form action="../service/auth.php" method="post" id="eventForm" class="bg-white p-6 rounded-lg shadow-md">
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-bold mb-2">Username:</label>
-                <input type="text" name="username" id="name" class="w-full p-2 border border-gray-300 rounded-lg" required>
-            </div>
+    <div class="container">
+        <h1 class="form-title">Buat Akun Baru</h1>
+        <form action="../service/auth.php" method="post" id="eventForm">
             
-            <div class="mb-4">
-                <label for="event" class="block text-gray-700 font-bold mb-2">Email:</label>
-                <input type="email" name="email" id="event" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            <div class="form-group">
+                <label for="name">Username</label>
+                <input type="text" name="username" id="name" required>
             </div>
 
-            <div class="mb-4">
-                <label for="date" class="block text-gray-700 font-bold mb-2">No. Tlp:</label>
-                <input type="number" name="phone" id="date" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
             </div>
 
-            <div class="mb-4">
-                <label for="date" class="block text-gray-700 font-bold mb-2">Password:</label>
-                <input type="password" name="password" id="date" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            <div class="form-group">
+                <label for="phone">No. Telepon</label>
+                <input type="number" name="phone" id="phone" required>
             </div>
 
-            <div class="mb-4">
-                <label for="date" class="block text-gray-700 font-bold mb-2">confirm Password:</label>
-                <input type="password" name="cpassword" id="date" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
             </div>
 
+            <div class="form-group">
+                <label for="cpassword">Konfirmasi Password</label>
+                <input type="password" name="cpassword" id="cpassword" required>
+            </div>
 
-
-            <button type="submit" name="type" value="account" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Buat akun</button>
+            <button type="submit" name="type" value="account" class="submit-btn">Buat Akun</button>
         </form>
-
-        
-       
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Formulir Event</p>
-    </footer>
+    </div>
 
 </body>
-</html>     
+
+</html>

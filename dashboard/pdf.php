@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION['username']) == false) {
+    header("location: index.php");
+exit();
+}
 // Include FPDF library
 require('../vendor/fpdf/fpdf.php');
 
